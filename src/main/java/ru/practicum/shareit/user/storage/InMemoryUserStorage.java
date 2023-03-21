@@ -9,6 +9,7 @@ import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.service.UserService;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,16 +40,16 @@ public class InMemoryUserStorage implements UserService {
     public User editUser(Long userId, User updateUser) throws DuplicationException {
         User user = users.get(userId);
 
-        if(updateUser.getId() != null) {
+        if (updateUser.getId() != null) {
             user.setId(updateUser.getId());
         } else {
             updateUser.setId(userId);
         }
-        if(updateUser.getEmail() != null) {
+        if (updateUser.getEmail() != null) {
             checkDuplicationEmail(updateUser);
             user.setEmail(updateUser.getEmail());
         }
-        if(updateUser.getName() != null) {
+        if (updateUser.getName() != null) {
             user.setName(updateUser.getName());
         }
 
@@ -60,7 +61,7 @@ public class InMemoryUserStorage implements UserService {
     //Получить пользователя по ID
     @Override
     public User getUser(Long userId) throws NotFoundException {
-        if(!users.containsKey(userId)) {
+        if (!users.containsKey(userId)) {
             throw new NotFoundException("Пользователь с айди:" + userId + " не найден!");
         }
         return users.get(userId);
@@ -79,19 +80,19 @@ public class InMemoryUserStorage implements UserService {
     }
 
     private void checkDuplicationEmail(User user) throws DuplicationException {
-        if(users.values().stream()
+        if (users.values().stream()
                 .anyMatch(u -> u.getEmail().contains(user.getEmail()) && !u.getId().equals(user.getId()))) {
             throw new DuplicationException("Email уже зарегестрирован");
         }
     }
 
     private User validate(User user) throws ValidationException, DuplicationException {
-        if(user.getEmail() == null || !user.getEmail().contains("@")) {
+        if (user.getEmail() == null || !user.getEmail().contains("@")) {
             throw new ValidationException("Неправильный формат email");
         }
         checkDuplicationEmail(user);
 
-        if(user.getId() == null) {
+        if (user.getId() == null) {
             user.setId(userId++);
         }
         return user;

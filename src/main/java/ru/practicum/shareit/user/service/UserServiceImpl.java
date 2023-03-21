@@ -6,6 +6,7 @@ import ru.practicum.shareit.exceptions.DuplicationException;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.user.model.User;
+
 import java.util.List;
 
 @Service
