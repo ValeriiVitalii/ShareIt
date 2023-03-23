@@ -21,6 +21,7 @@ public class UserController {
 
     UserService userService;
 
+
     @PostMapping
     public User postUser(@Valid @RequestBody User user) throws ValidationException, DuplicationException {
         return userService.createUser(user);

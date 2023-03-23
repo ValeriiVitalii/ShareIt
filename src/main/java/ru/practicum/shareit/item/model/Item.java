@@ -9,15 +9,15 @@ import ru.practicum.shareit.item.dto.ItemDto;
 @Data
 public class Item {
 
-    Long id;
+    public Long id;
 
-    String name;
+    public String name;
 
-    String description;
+    public String description;
 
-    Boolean available;
+    public Boolean available;
 
-    Long userId;
+    public Long userId;
 
     public Item(ItemDto itemDto, Long userId) {
         id = itemDto.getId();

@@ -23,7 +23,7 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse validation(final NotFoundException e) {
-        return new ErrorResponse("Имеется дубликат", e.getMessage());
+        return new ErrorResponse("Сущность не найдена", e.getMessage());
     }
 
 }

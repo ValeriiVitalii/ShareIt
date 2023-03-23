@@ -32,7 +32,7 @@ public class InMemoryItemStorage implements ItemService {
         ItemDto itemWithId = validate(itemDto);
 
         items.put(itemWithId.getId(), new Item(itemDto, userId));
-        log.info("Добавлен новая вещь с id=" + itemWithId.getId());
+        log.info("Добавлен новая вещь c ID={}", itemWithId.getId());
         return itemWithId;
     }
 
@@ -59,7 +59,7 @@ public class InMemoryItemStorage implements ItemService {
         }
 
         items.put(item.getId(), item);
-        log.info("Внесены изменения в данные вещи с ID=" + item.getId());
+        log.info("Внесены изменения в данные вещи с ID={}", item.getId());
         return mapRowToItemDto(items.get(id));
     }
 

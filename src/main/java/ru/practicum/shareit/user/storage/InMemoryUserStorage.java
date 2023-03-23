@@ -31,7 +31,7 @@ public class InMemoryUserStorage implements UserService {
         User userValidate = validate(user);
 
         users.put(userValidate.getId(), userValidate);
-        log.info("Добавлен новый пользователь с ID=" + userValidate.getId());
+        log.info("Добавлен новый пользователь ID={}", userValidate.getId());
         return users.get(user.getId());
     }
 
@@ -53,7 +53,7 @@ public class InMemoryUserStorage implements UserService {
             user.setName(updateUser.getName());
         }
 
-        log.info("Внесены изменения в данные пользователя с ID=" + user.getId());
+        log.info("Внесены изменения в данные пользователя ID={}", user.getId());
         users.put(userId, user);
         return users.get(userId);
     }
@@ -70,6 +70,7 @@ public class InMemoryUserStorage implements UserService {
     //Получение всех пользователей
     @Override
     public List<User> getAllUser() {
+        String userId = "userId";
         return new ArrayList<>(users.values());
     }
 

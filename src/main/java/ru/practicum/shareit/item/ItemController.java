@@ -20,35 +20,37 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService itemService;
-
     private final UserService userService;
+
+    static final String USER_ID = "X-Sharer-User-Id";
 
 
     @PostMapping
-    public ItemDto postItem(@RequestHeader("X-Sharer-User-Id") Long userId,
+    public ItemDto postItem(@RequestHeader(USER_ID) Long userId,
                             @Valid @RequestBody ItemDto itemDto) throws NotFoundException, ValidationException {
         userValidate(userId);
+
         return itemService.createItem(userId, itemDto);
     }
 
     @PatchMapping("/{itemId}")
-    public ItemDto patchItem(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable("itemId") Long itemId,
+    public ItemDto patchItem(@RequestHeader(USER_ID) Long userId, @PathVariable("itemId") Long itemId,
                              @Valid @RequestBody ItemDto item) throws NotFoundException {
         return itemService.editItem(userId, itemId, item);
     }
 
     @GetMapping("/{itemId}")
-    public ItemDto getItem(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable("itemId") Long itemId) {
+    public ItemDto getItem(@RequestHeader(USER_ID) Long userId, @PathVariable("itemId") Long itemId) {
         return itemService.getItem(userId, itemId);
     }
 
     @GetMapping
-    public List<ItemDto> getAllItem(@RequestHeader("X-Sharer-User-Id") Long userId) throws NotFoundException {
+    public List<ItemDto> getAllItem(@RequestHeader(USER_ID) Long userId) throws NotFoundException {
         return itemService.getAllItem(userId);
     }
 
     @GetMapping("/search")
-    public List<ItemDto> getItem(@RequestHeader("X-Sharer-User-Id") Long userId, @RequestParam String text) {
+    public List<ItemDto> getItem(@RequestHeader(USER_ID) Long userId, @RequestParam String text) {
         return itemService.getItem(userId, text);
     }
 

@@ -10,11 +10,11 @@ import lombok.Data;
 @Builder
 public class ItemDto {
 
-    Long id;
+    public Long id;
 
-    String name;
+    public String name;
 
-    String description;
+    public String description;
 
-    Boolean available;
+    public Boolean available;
 }
