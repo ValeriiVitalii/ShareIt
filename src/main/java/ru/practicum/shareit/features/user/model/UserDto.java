@@ -16,7 +16,5 @@ public class UserDto {
 
     @NotNull
     Long id;
-
-    @NotBlank(groups = PatchValidationGroup.NameNotBlank.class)
-    String name;
+    
 }
