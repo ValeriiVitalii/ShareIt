@@ -15,4 +15,5 @@ public class UserDto {
     @NotNull
     Long id;
 
+    String name;
 }
