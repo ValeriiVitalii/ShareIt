@@ -35,6 +35,12 @@ CREATE TABLE IF NOT EXISTS bookings (
                                         status       booking_status  NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS requests (
+                                        request_id   BIGINT          GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                                        text         VARCHAR(255)    NOT NULL,
+                                        user_id      BIGINT 		    REFERENCES users (user_id) ON DELETE CASCADE
+);
+
 DELETE FROM users where user_id > 0;
 ALTER TABLE users ALTER COLUMN user_id RESTART WITH 1;
 
