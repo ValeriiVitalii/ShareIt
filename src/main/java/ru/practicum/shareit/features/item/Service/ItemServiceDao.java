@@ -250,7 +250,7 @@ public class ItemServiceDao implements ItemService {
     private BookingShortIdWithBookerId toBookingShortIdWithBookerId(Booking booking) throws NotFoundException {
         return BookingShortIdWithBookerId.builder()
                 .id(booking.getId())
-                .BookerId(booking.getBooker().getId())
+                .bookerId(booking.getBooker().getId())
                 .build();
     }
 

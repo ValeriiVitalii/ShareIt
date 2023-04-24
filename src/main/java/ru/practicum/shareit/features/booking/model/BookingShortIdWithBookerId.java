@@ -12,5 +12,5 @@ public class BookingShortIdWithBookerId {
 
     Long id;
 
-    Long BookerId;
+    Long bookerId;
 }
