@@ -46,7 +46,7 @@ public class BookingRepositoryTest {
             .email("john.doe@example.com")
             .build();
 
-    User userBookerBooking3= User.builder()
+    User userBookerBooking3 = User.builder()
             .name("Mark Doe")
             .email("mark.doe@example.com")
             .build();

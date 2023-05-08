@@ -15,8 +15,6 @@ import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.features.booking.BookingRepository;
 import ru.practicum.shareit.features.booking.BookingStatus;
 import ru.practicum.shareit.features.booking.model.Booking;
-import ru.practicum.shareit.features.booking.model.BookingDtoShort;
-import ru.practicum.shareit.features.booking.service.BookingServiceDao;
 import ru.practicum.shareit.features.item.Service.ItemServiceDao;
 import ru.practicum.shareit.features.item.model.CommentDto;
 import ru.practicum.shareit.features.item.model.Item;
