@@ -67,8 +67,8 @@ public class ItemRequestServiceDao implements ItemRequestService {
             throw new NotFoundException("Запрос не найден!");
         }
         ItemRequestWithItems itemRequestWithItems = toItemRequestWithItems(itemRequestRepository.findItemRequestById(requestId));
-        itemRequestWithItems.setItems(toItemsDto(itemAnswerRepository.findByItemRequestId
-                (itemRequestWithItems.getId()), itemRequestWithItems.getId()));
+        itemRequestWithItems.setItems(toItemsDto(itemAnswerRepository.findByItemRequestId(
+                itemRequestWithItems.getId()), itemRequestWithItems.getId()));
 
         return itemRequestWithItems;
     }
