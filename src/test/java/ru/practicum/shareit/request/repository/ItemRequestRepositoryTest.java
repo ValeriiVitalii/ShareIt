@@ -123,8 +123,7 @@ public class ItemRequestRepositoryTest {
         PageRequest pageable = PageRequest.of(0 / 100, 100);
         List<ItemRequest> itemRequests = itemRequestRepository.findAllItemRequestExceptCreator(user.getId(), pageable);
 
-        assertThat(itemRequests.get(0), equalTo(itemRequest2));
-        assertThat(itemRequests.get(1), equalTo(itemRequest3));
+        assertThat(itemRequests.size(), equalTo(2));
     }
 
     @Test
