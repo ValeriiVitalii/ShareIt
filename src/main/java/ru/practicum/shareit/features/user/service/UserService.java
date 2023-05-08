@@ -18,4 +18,6 @@ public interface UserService {
     List<User> getAllUser();
 
     void deleteUser(Long userId);
+
+    void validate(User user) throws ValidationException;
 }

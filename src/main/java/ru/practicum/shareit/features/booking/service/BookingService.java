@@ -19,10 +19,12 @@ public interface BookingService {
 
     BookingDto getBookingById(Long userId, Long bookingId) throws NotFoundException, ValidationException;
 
-    List<BookingDto> getAllBookingByUser(Long userId, String status) throws NotFoundException, StatusException;
+    List<BookingDto> getAllBookingByBooker(Long userId, String status, Integer from, Integer size) throws NotFoundException, StatusException, ValidationException;
 
-    List<BookingDto> getAllBookingByOwner(Long userId, String status) throws NotFoundException, StatusException;
+    List<BookingDto> getAllBookingByOwner(Long userId, String status, Integer from, Integer size) throws NotFoundException, StatusException, ValidationException;
 
     void startAndEndValidation(LocalDateTime start, LocalDateTime end) throws ValidationException;
+
+    void checkOwnerAndUserId(Long userId, Long itemId) throws NotFoundException;
 
 }

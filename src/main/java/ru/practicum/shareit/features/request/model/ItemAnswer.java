@@ -2,32 +2,32 @@ package ru.practicum.shareit.features.request.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.shareit.features.user.model.User;
+import ru.practicum.shareit.features.item.model.Item;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "requests")
-@Builder
+@Table(name = "item_answer")
 @Data
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@NoArgsConstructor
 @AllArgsConstructor
-public class Request {
+@NoArgsConstructor
+public class ItemAnswer {
 
     @Id
-    @Column(name = "request_id")
+    @Column(name = "item_answer_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column
-    @NotBlank
-    String text;
-
-    @Column
     @NotNull
     @ManyToOne
-    User creator;
+    @JoinColumn(name = "item_request_id")
+    ItemRequest itemRequest;
+
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "item_id")
+    Item item;
 }

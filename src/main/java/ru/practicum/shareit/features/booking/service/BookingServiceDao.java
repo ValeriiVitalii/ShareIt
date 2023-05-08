@@ -2,6 +2,7 @@ package ru.practicum.shareit.features.booking.service;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.StatusException;
@@ -54,7 +55,7 @@ public class BookingServiceDao implements BookingService {
         setStatusToApprovedOrRejected(approved, bookingDto);
 
         log.info("Внесены изменения в бронировании с ID={}", bookingDto.getId());
-        bookingRepository.patchBooking(bookingId, bookingDto.getStatus());
+        bookingRepository.setStatusById(bookingId, bookingDto.getStatus());
         return bookingDto;
     }
 
@@ -71,52 +72,52 @@ public class BookingServiceDao implements BookingService {
 
     //Получение всех Booking по booker_id
     @Override
-    public List<BookingDto> getAllBookingByUser(Long userId, String status) throws NotFoundException, StatusException {
+    public List<BookingDto> getAllBookingByBooker(Long userId, String status, Integer from, Integer size) throws NotFoundException, StatusException, ValidationException {
         User user = userService.getUserById(userId);
+        PageRequest pageable = getPageRequest(from, size);
+        List<BookingDto> bookings = toBookingsDto(bookingRepository.findAllByBookerOrderByStartDesc(user, pageable));
 
         if (status.equals("ALL") || status.equals("FUTURE")) {
-            return toBookingsDto(bookingRepository.findAllByBookerOrderByStartDesc(user));
+            return bookings;
         }
         if (status.equals("CURRENT")) {
-            List<BookingDto> bookings = toBookingsDto(bookingRepository.findAllByBookerOrderByStartDesc(user));
             return bookings.stream()
                     .filter(bookingDto -> bookingDto.getEnd().isAfter(LocalDateTime.now()) && bookingDto.getStart().isBefore(LocalDateTime.now()))
                     .sorted(Comparator.comparing(BookingDto::getStart))
                     .collect(Collectors.toList());
         }
         if (status.equals("PAST")) {
-            List<BookingDto> bookings = toBookingsDto(bookingRepository.findAllByBookerOrderByStartDesc(user));
             return bookings.stream()
                     .filter(bookingDto -> bookingDto.getEnd().isBefore(LocalDateTime.now()))
                     .collect(Collectors.toList());
         }
         BookingStatus bookingStatus = checkStatus(status);
-        return toBookingsDto(bookingRepository.findAllByBookerAndStatusOrderByStartDesc(user, bookingStatus));
+        return toBookingsDto(bookingRepository.findAllByBookerAndStatusOrderByStartDesc(user, bookingStatus, pageable));
     }
 
     //Получение всех Booking по id Владельца Item
     @Override
-    public List<BookingDto> getAllBookingByOwner(Long userId, String status) throws NotFoundException, StatusException {
+    public List<BookingDto> getAllBookingByOwner(Long userId, String status, Integer from, Integer size) throws NotFoundException, StatusException, ValidationException {
         User user = userService.getUserById(userId);
+        PageRequest pageable = getPageRequest(from, size);
+        List<BookingDto> bookings = toBookingsDto(bookingRepository.findAllByItemIdOwnerOrderByStartDesc(user, pageable));
 
         if (status.equals("ALL") || status.equals("FUTURE")) {
-            return toBookingsDto(bookingRepository.findAllByItemIdOwnerOrderByStartDesc(user));
+            return bookings;
         }
         if (status.equals("CURRENT")) {
-            List<BookingDto> bookings = toBookingsDto(bookingRepository.findAllByItemIdOwnerOrderByStartDesc(user));
             return bookings.stream()
                     .filter(bookingDto -> bookingDto.getEnd().isAfter(LocalDateTime.now()) && bookingDto.getStart().isBefore(LocalDateTime.now()))
                     .sorted(Comparator.comparing(BookingDto::getStart))
                     .collect(Collectors.toList());
         }
         if (status.equals("PAST")) {
-            List<BookingDto> bookings = toBookingsDto(bookingRepository.findAllByItemIdOwnerOrderByStartDesc(user));
             return bookings.stream()
                     .filter(bookingDto -> bookingDto.getEnd().isBefore(LocalDateTime.now()))
                     .collect(Collectors.toList());
         }
         BookingStatus bookingStatus = checkStatus(status);
-        return toBookingsDto(bookingRepository.findAllByItemIdOwnerAndStatusOrderByStartDesc(user, bookingStatus));
+        return toBookingsDto(bookingRepository.findAllByItemIdOwnerAndStatusOrderByStartDesc(user, bookingStatus, pageable));
     }
 
     @Override
@@ -136,7 +137,8 @@ public class BookingServiceDao implements BookingService {
         }
     }
 
-    private void checkOwnerAndUserId(Long userId, Long itemId) throws NotFoundException {
+    @Override
+    public void checkOwnerAndUserId(Long userId, Long itemId) throws NotFoundException {
         Long ownerId = itemService.getItem(itemId).getOwner().getId();
         if (ownerId.equals(userId)) {
             throw new NotFoundException("Вы не можете взять вещь в аренду, будучи её владельцем!");
@@ -154,6 +156,7 @@ public class BookingServiceDao implements BookingService {
             if (bookingDto.getStatus().equals(BookingStatus.APPROVED)) {
                 throw new ValidationException("Аренда уже одобрена.");
             }
+
             bookingDto.setStatus(BookingStatus.APPROVED);
         } else {
             bookingDto.setStatus(BookingStatus.REJECTED);
@@ -166,6 +169,13 @@ public class BookingServiceDao implements BookingService {
         } catch (IllegalArgumentException e) {
             throw new StatusException("Invalid booking status");
         }
+    }
+
+    private PageRequest getPageRequest(Integer from, Integer size) throws ValidationException {
+        if (from < 0) {
+            throw new ValidationException("Некорректное значение from = " + from);
+        }
+        return PageRequest.of(from / size, size);
     }
 
     public BookingDto toBookingDto(Booking booking) throws NotFoundException {

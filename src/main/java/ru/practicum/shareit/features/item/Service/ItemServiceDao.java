@@ -4,6 +4,7 @@ package ru.practicum.shareit.features.item.Service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
@@ -11,9 +12,12 @@ import ru.practicum.shareit.features.booking.BookingRepository;
 import ru.practicum.shareit.features.booking.BookingStatus;
 import ru.practicum.shareit.features.booking.model.Booking;
 import ru.practicum.shareit.features.booking.model.BookingShortIdWithBookerId;
-import ru.practicum.shareit.features.item.CommentRepository;
-import ru.practicum.shareit.features.item.ItemRepository;
+import ru.practicum.shareit.features.item.Repository.CommentRepository;
+import ru.practicum.shareit.features.item.Repository.ItemRepository;
 import ru.practicum.shareit.features.item.model.*;
+import ru.practicum.shareit.features.request.repository.ItemAnswerRepository;
+import ru.practicum.shareit.features.request.repository.ItemRequestRepository;
+import ru.practicum.shareit.features.request.model.ItemAnswer;
 import ru.practicum.shareit.features.user.service.UserService;
 
 import java.time.LocalDateTime;
@@ -32,6 +36,10 @@ public class ItemServiceDao implements ItemService {
 
     private final CommentRepository commentRepository;
 
+    private final ItemAnswerRepository itemAnswerRepository;
+
+    private final ItemRequestRepository itemRequestRepository;
+
     private final UserService userService;
 
     @Override
@@ -40,6 +48,11 @@ public class ItemServiceDao implements ItemService {
         containsUser(userId);
         Item itemWithId = itemRepository.save(toItem(itemDto, userId));
 
+        if (itemDto.getRequestId() != null) {
+            itemAnswerRepository.save(toItemAnswer(itemWithId, itemDto.getRequestId()));
+            log.info("Добавлен новая вещь c ID={}", itemWithId.getId());
+            return toItemDtoWithRequestId(itemWithId, itemDto.getRequestId());
+        }
         log.info("Добавлен новая вещь c ID={}", itemWithId.getId());
         return toItemDto(itemWithId);
 
@@ -105,11 +118,12 @@ public class ItemServiceDao implements ItemService {
 
     //Получение всех Item по userId
     @Override
-    public List<ItemDto> getAllItemByUser(Long userId) throws NotFoundException {
+    public List<ItemDto> getAllItemByUser(Long userId, Integer from, Integer size) throws NotFoundException, ValidationException {
         userValidate(userId);
+        PageRequest pageable = getPageRequest(from, size);
         List<ItemDto> userItems = new ArrayList<>();
 
-        itemRepository.findAll().stream()
+        itemRepository.findAll(pageable).stream()
                 .filter(i -> i.getOwner().getId().equals(userId))
                 .forEach(i -> {
                     try {
@@ -124,9 +138,10 @@ public class ItemServiceDao implements ItemService {
 
     //Получение Item по тексту
     @Override
-    public List<ItemDto> getItemByText(Long userId, String text) {
+    public List<ItemDto> getItemByText(Long userId, String text, Integer from, Integer size) throws ValidationException {
         List<ItemDto> foundItems = new ArrayList<>();
-        itemRepository.findAll().stream()
+        PageRequest pageable = getPageRequest(from, size);
+        itemRepository.findAll(pageable).stream()
                 .filter(i -> findWord(i.getDescription(), text) && i.getAvailable())
                 .forEach(i -> foundItems.add(toItemDto(itemRepository.findById(i.getId()).orElseThrow())));
         return foundItems;
@@ -191,6 +206,13 @@ public class ItemServiceDao implements ItemService {
 
     private void containsUser(Long userId) throws NotFoundException {
         userService.getUserById(userId);
+    }
+
+    private PageRequest getPageRequest(Integer from, Integer size) throws ValidationException {
+        if (from < 0) {
+            throw new ValidationException("Некорректное значение from = " + from);
+        }
+        return PageRequest.of(from / size, size);
     }
 
     @Override
@@ -283,6 +305,23 @@ public class ItemServiceDao implements ItemService {
                 .created(LocalDateTime.now())
                 .text(comment.getText())
                 .authorName(userService.getUserById(userId).getName())
+                .build();
+    }
+
+    private ItemAnswer toItemAnswer(Item item, Long itemRequestId) {
+        return ItemAnswer.builder()
+                .itemRequest(itemRequestRepository.findById(itemRequestId).get())
+                .item(item)
+                .build();
+    }
+
+    private ItemDto toItemDtoWithRequestId(Item item, Long requestId) {
+        return ItemDto.builder()
+                .id(item.getId())
+                .name(item.getName())
+                .description(item.getDescription())
+                .available(item.getAvailable())
+                .requestId(requestId)
                 .build();
     }
 }

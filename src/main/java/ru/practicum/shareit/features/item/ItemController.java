@@ -1,11 +1,9 @@
 package ru.practicum.shareit.features.item;
 
 import lombok.AllArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.features.item.Service.ItemService;
 import ru.practicum.shareit.features.item.model.CommentDto;
-import ru.practicum.shareit.validations.PatchValidationGroup;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.features.item.model.ItemDto;
@@ -41,7 +39,7 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     public ItemDto patchItem(@RequestHeader(USER_ID) Long userId, @PathVariable("itemId") Long itemId,
-                             @Validated(PatchValidationGroup.class) @RequestBody ItemDto itemDto) throws NotFoundException {
+                             @RequestBody ItemDto itemDto) throws NotFoundException {
         return itemService.editItem(userId, itemId, itemDto);
     }
 
@@ -52,13 +50,18 @@ public class ItemController {
 
     //Получение всех Item по userId
     @GetMapping
-    public List<ItemDto> getAllItemByUser(@RequestHeader(USER_ID) Long userId) throws NotFoundException {
-        return itemService.getAllItemByUser(userId);
+    public List<ItemDto> getAllItemByUser(@RequestHeader(USER_ID) Long userId,
+                                          @RequestParam(defaultValue = "0") Integer from,
+                                          @RequestParam(defaultValue = "100") Integer size) throws NotFoundException, ValidationException {
+        return itemService.getAllItemByUser(userId, from, size);
     }
 
     //Получение Item по тексту
     @GetMapping("/search")
-    public List<ItemDto> getItemByText(@RequestHeader(USER_ID) Long userId, @RequestParam String text) {
-        return itemService.getItemByText(userId, text);
+    public List<ItemDto> getItemByText(@RequestHeader(USER_ID) Long userId,
+                                       @RequestParam String text,
+                                       @RequestParam(defaultValue = "0") Integer from,
+                                       @RequestParam(defaultValue = "100") Integer size) throws ValidationException {
+        return itemService.getItemByText(userId, text, from, size);
     }
 }

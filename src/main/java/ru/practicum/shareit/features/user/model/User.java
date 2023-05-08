@@ -1,17 +1,19 @@
 package ru.practicum.shareit.features.user.model;
 
-import lombok.AccessLevel;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.shareit.validations.PatchValidationGroup;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+
 @Entity
 @Table(name = "users")
 @Data
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
 
     @Id
@@ -23,6 +25,6 @@ public class User {
     String email;
 
     @Column
-    @NotBlank(groups = PatchValidationGroup.NameNotBlank.class)
+    @NotBlank()
     String name;
 }

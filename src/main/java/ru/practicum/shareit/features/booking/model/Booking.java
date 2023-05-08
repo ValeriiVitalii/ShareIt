@@ -38,7 +38,7 @@ public class Booking {
     Item itemId;
 
     @NotNull
-    @ManyToOne//(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     User booker;
 
