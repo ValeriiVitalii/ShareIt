@@ -9,10 +9,12 @@ import ru.practicum.shareit.features.user.model.User;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "bookings")
-@Data
+@Getter
+@Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -45,4 +47,21 @@ public class Booking {
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     BookingStatus status;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Booking booking = (Booking) o;
+        return Objects.equals(id, booking.id) &&
+                Objects.equals(start, booking.start) &&
+                Objects.equals(end, booking.end) &&
+                Objects.equals(itemId, booking.itemId) &&
+                Objects.equals(booker, booking.booker) &&
+                status == booking.status;
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, start, end, itemId, booker, status);
+    }
 }

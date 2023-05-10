@@ -141,7 +141,8 @@ public class BookingServiceDao implements BookingService {
     public void checkOwnerAndUserId(Long userId, Long itemId) throws NotFoundException {
         Long ownerId = itemService.getItem(itemId).getOwner().getId();
         if (ownerId.equals(userId)) {
-            throw new NotFoundException("Вы не можете взять вещь в аренду, будучи её владельцем!");
+            throw new NotFoundException("Вы не можете взять вещь с id=" + itemId +
+                    " в аренду поскольку, вы являетесь владельцем данной вещи") ;
         }
     }
 
@@ -173,7 +174,7 @@ public class BookingServiceDao implements BookingService {
 
     private PageRequest getPageRequest(Integer from, Integer size) throws ValidationException {
         if (from < 0) {
-            throw new ValidationException("Некорректное значение from = " + from);
+            throw new ValidationException(String.format("Некорректное значение from = %d", from));
         }
         return PageRequest.of(from / size, size);
     }

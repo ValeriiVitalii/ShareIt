@@ -9,7 +9,8 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "item_answer")
-@Data
+@Getter
+@Setter
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @AllArgsConstructor

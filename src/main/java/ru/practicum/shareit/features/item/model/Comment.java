@@ -9,7 +9,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @Table(name = "comments")
 @FieldDefaults(level = AccessLevel.PRIVATE)
