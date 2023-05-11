@@ -1,8 +1,6 @@
 package ru.practicum.shareit.features.booking.model;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import ru.practicum.shareit.features.user.model.User;
 
@@ -12,6 +10,8 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@NoArgsConstructor
+@AllArgsConstructor
 public class BookingDtoShort {
 
     @NotNull

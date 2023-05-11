@@ -35,15 +35,17 @@ CREATE TABLE IF NOT EXISTS bookings (
                                         status       booking_status  NOT NULL
 );
 
-DELETE FROM users where user_id > 0;
-ALTER TABLE users ALTER COLUMN user_id RESTART WITH 1;
+CREATE TABLE IF NOT EXISTS item_request (
+                                        item_request_id   BIGINT          GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                                        description       VARCHAR(255)    NOT NULL,
+                                        user_id           BIGINT 		  REFERENCES users (user_id) ON DELETE CASCADE,
+                                        created           TIMESTAMP WITHOUT TIME ZONE       NOT NULL
+);
 
-DELETE FROM items where item_id > 0;
-ALTER TABLE items ALTER COLUMN item_id RESTART WITH 1;
+CREATE TABLE IF NOT EXISTS item_answer (
+                                            item_answer_id   BIGINT          GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                                            item_request_id  BIGINT          REFERENCES item_request (item_request_id) ON DELETE CASCADE,
+                                            item_id          BIGINT          REFERENCES items (item_id) ON DELETE CASCADE
+);
 
-DELETE FROM comments where comment_id > 0;
-ALTER TABLE comments ALTER COLUMN comment_id RESTART WITH 1;
-
-DELETE FROM bookings where booking_id > 0;
-ALTER TABLE bookings ALTER COLUMN booking_id RESTART WITH 1;
 

@@ -40,12 +40,11 @@ public class UserServiceDao implements UserService {
         }
         if (updateUser.getEmail() != null) {
             user.setEmail(updateUser.getEmail());
-            userRepository.setEmail(user.getEmail(), userId);
         }
         if (updateUser.getName() != null) {
             user.setName(updateUser.getName());
-            userRepository.setName(user.getName(), user.getId());
         }
+        userRepository.save(user);
         log.info("Внесены изменения в данные пользователя ID={}", user.getId());
         return user;
     }
@@ -66,7 +65,8 @@ public class UserServiceDao implements UserService {
         userRepository.deleteById(userId);
     }
 
-    private void validate(User user) throws ValidationException {
+    @Override
+    public void validate(User user) throws ValidationException {
         if (user.getEmail() == null || !user.getEmail().contains("@")) {
             throw new ValidationException("Неправильный формат email");
         }

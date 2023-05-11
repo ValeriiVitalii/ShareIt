@@ -1,14 +1,12 @@
 package ru.practicum.shareit.features.user;
 
 import lombok.AllArgsConstructor;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.exceptions.DuplicationException;
 import ru.practicum.shareit.exceptions.NotFoundException;
 import ru.practicum.shareit.exceptions.ValidationException;
 import ru.practicum.shareit.features.user.service.UserService;
 import ru.practicum.shareit.features.user.model.User;
-import ru.practicum.shareit.validations.PatchValidationGroup;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -27,7 +25,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public User patchUser(@PathVariable("userId") Long userId, @Validated(PatchValidationGroup.class) @RequestBody User user)
+    public User patchUser(@PathVariable("userId") Long userId, @RequestBody User user)
             throws ValidationException, DuplicationException, NotFoundException {
 
         return userService.patchUser(userId, user);

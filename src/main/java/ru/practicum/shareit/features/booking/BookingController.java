@@ -45,18 +45,22 @@ public class BookingController {
 
     //Получение всех Booking по booker_id
     @GetMapping
-    public List<BookingDto> getAllBookingByUser(@RequestHeader(USER_ID) Long userId,
-                                                @RequestParam(defaultValue = "ALL") String state)
-            throws NotFoundException, StatusException {
-        return bookingService.getAllBookingByUser(userId, state);
+    public List<BookingDto> getAllBookingByBooker(@RequestHeader(USER_ID) Long userId,
+                                                @RequestParam(defaultValue = "ALL") String state,
+                                                @RequestParam(defaultValue = "0") Integer from,
+                                                @RequestParam(defaultValue = "100") Integer size)
+            throws NotFoundException, StatusException, ValidationException {
+        return bookingService.getAllBookingByBooker(userId, state, from, size);
     }
 
     //Получение всех Booking по id Владельца Item
     @GetMapping("/owner")
     public List<BookingDto> getAllBookingByOwner(@RequestHeader(USER_ID) Long userId,
-                                                 @RequestParam(defaultValue = "ALL") String state)
-            throws NotFoundException, StatusException {
-        return bookingService.getAllBookingByOwner(userId, state);
+                                                 @RequestParam(defaultValue = "ALL") String state,
+                                                 @RequestParam(defaultValue = "0") Integer from,
+                                                 @RequestParam(defaultValue = "100") Integer size)
+            throws NotFoundException, StatusException, ValidationException {
+        return bookingService.getAllBookingByOwner(userId, state, from, size);
     }
 
 

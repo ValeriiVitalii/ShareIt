@@ -20,9 +20,9 @@ public interface ItemService {
 
     ItemShortIdWithName getItemShortIdWithNameById(Long itemId) throws NotFoundException;
 
-    List<ItemDto> getAllItemByUser(Long userId) throws NotFoundException;
+    List<ItemDto> getAllItemByUser(Long userId, Integer from, Integer size) throws NotFoundException, ValidationException;
 
-    List<ItemDto> getItemByText(Long userId, String text);
+    List<ItemDto> getItemByText(Long userId, String text, Integer from, Integer size) throws ValidationException;
 
     void userValidate(Long userId) throws NotFoundException;
 

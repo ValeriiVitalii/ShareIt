@@ -1,6 +1,7 @@
 package ru.practicum.shareit.features.booking;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,15 +16,15 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
     @Modifying(clearAutomatically = true)
     @Transactional
     @Query("UPDATE Booking b SET b.status = ?2 WHERE b.id = ?1")
-    void patchBooking(Long bookingId, BookingStatus bookingStatus);
+    void setStatusById(Long bookingId, BookingStatus bookingStatus);
 
-    List<Booking> findAllByBookerOrderByStartDesc(User userId);
+    List<Booking> findAllByBookerOrderByStartDesc(User userId, Pageable pageable);
 
-    List<Booking> findAllByBookerAndStatusOrderByStartDesc(User userId, BookingStatus status);
+    List<Booking> findAllByBookerAndStatusOrderByStartDesc(User userId, BookingStatus status, Pageable pageable);
 
-    List<Booking> findAllByItemIdOwnerOrderByStartDesc(User userId);
+    List<Booking> findAllByItemIdOwnerOrderByStartDesc(User userId, Pageable pageable);
 
-    List<Booking> findAllByItemIdOwnerAndStatusOrderByStartDesc(User userId, BookingStatus status);
+    List<Booking> findAllByItemIdOwnerAndStatusOrderByStartDesc(User userId, BookingStatus status, Pageable pageable);
 
     @Query("SELECT b FROM Booking b where b.itemId.id = ?1 ORDER BY b.start")
     List<Booking> findAllByItemIdOrderByStartAsc(Long itemId);
