@@ -17,6 +17,8 @@ public class BookingController {
     private BookingClient bookingClient;
 
     static final String USER_ID = "X-Sharer-User-Id";
+    static final String ID = "bookingId";
+
 
     @PostMapping
     public ResponseEntity<Object> postBooking(@RequestHeader(USER_ID) Long userId, @Valid @RequestBody BookingDtoShort bookingDto) {
@@ -25,14 +27,14 @@ public class BookingController {
 
     //Изменение статуса Booking
     @PatchMapping("/{bookingId}")
-    public ResponseEntity<Object> patchBooking(@RequestHeader(USER_ID) Long userId, @PathVariable("bookingId") Long bookingId,
+    public ResponseEntity<Object> patchBooking(@RequestHeader(USER_ID) Long userId, @PathVariable(ID) Long bookingId,
                                                @RequestParam Boolean approved) {
         return bookingClient.patchBooking(userId, bookingId, approved);
     }
 
     //Получение Booking по id
     @GetMapping("/{bookingId}")
-    public ResponseEntity<Object> getBookingById(@RequestHeader(USER_ID) Long userId, @PathVariable("bookingId") Long bookingId) {
+    public ResponseEntity<Object> getBookingById(@RequestHeader(USER_ID) Long userId, @PathVariable(ID) Long bookingId) {
         return bookingClient.getBookingById(userId, bookingId);
     }
 
