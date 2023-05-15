@@ -20,8 +20,7 @@ public class UserController {
     }
 
     @PatchMapping("/{userId}")
-    public ResponseEntity<Object> patchUser(@PathVariable("userId") Long userId, @RequestBody User user)
-            throws {
+    public ResponseEntity<Object> patchUser(@PathVariable("userId") Long userId, @RequestBody User user) {
 
         return userClient.patchUser(userId, user);
     }
