@@ -3,13 +3,10 @@ package ru.practicum.features.user;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 
-@Entity
-@Table(name = "users")
 @Getter
 @Setter
 @Builder
@@ -18,15 +15,10 @@ import java.util.Objects;
 @NoArgsConstructor
 public class User {
 
-    @Id
-    @Column(name = "user_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(unique = true)
     String email;
 
-    @Column
     @NotBlank()
     String name;
 

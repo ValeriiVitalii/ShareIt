@@ -132,7 +132,10 @@ public class ItemServiceDao implements ItemService {
                         throw new RuntimeException(e);
                     }
                 });
-        return userItems;
+
+        return userItems.stream()
+                .sorted(Comparator.comparing(i -> i.getLastBooking() == null))
+                .collect(Collectors.toList());
     }
 
     //Получение Item по тексту

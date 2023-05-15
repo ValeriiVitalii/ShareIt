@@ -1,20 +1,16 @@
-package ru.practicum.features.request;
+package ru.practicum.features.booking.model;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ItemRequestDto {
+public class BookingShortIdWithBookerId {
 
     Long id;
 
-    String description;
-
-    LocalDateTime created;
+    Long bookerId;
 }

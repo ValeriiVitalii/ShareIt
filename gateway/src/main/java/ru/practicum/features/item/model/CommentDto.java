@@ -1,7 +1,8 @@
-package ru.practicum.features.item;
+package ru.practicum.features.item.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 

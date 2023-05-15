@@ -1,11 +1,13 @@
 package ru.practicum.features.request;
 
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.exceptions.*;
+import ru.practicum.features.request.model.ItemRequestDto;
 
 import javax.validation.Valid;
-import java.util.List;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 
 
 @RestController
@@ -13,31 +15,33 @@ import java.util.List;
 @AllArgsConstructor
 public class ItemRequestController {
 
-    /*private final ItemRequestService itemRequestService;
+    private final ItemRequestClient itemRequestClient;
 
     static final String USER_ID = "X-Sharer-User-Id";
 
     @PostMapping
-    public ItemRequestDto postItemRequest(@RequestHeader(USER_ID) Long userId,
-                                          @Valid @RequestBody ItemRequestDto itemRequestDto) throws NotFoundException, ValidationException {
-        return itemRequestService.postItemRequest(userId, itemRequestDto);
+    public ResponseEntity<Object> postItemRequest(@RequestHeader(USER_ID) Long userId,
+                                                  @Valid @RequestBody ItemRequestDto itemRequestDto) {
+        return itemRequestClient.postItemRequest(userId, itemRequestDto);
     }
 
     @GetMapping
-    public List<ItemRequestWithItems> getItemRequestWithItemsByCreator(@RequestHeader(USER_ID) Long userId) throws NotFoundException {
-        return itemRequestService.getItemRequestWithItemsByCreator(userId);
+    public ResponseEntity<Object> getItemRequestWithItemsByCreator(@RequestHeader(USER_ID) Long userId) {
+        return itemRequestClient.getItemRequestWithItemsByCreator(userId);
     }
 
     @GetMapping("/all")
-    public List<ItemRequestWithItems> getItemRequestDtoByUserId(@RequestHeader(USER_ID) Long userId,
-                                                                @RequestParam(defaultValue = "0") Integer from,
-                                                                @RequestParam(defaultValue = "100") Integer size) throws NotFoundException, ValidationException {
-        return itemRequestService.getItemRequestWithItemsUserId(userId, from, size);
+    public ResponseEntity<Object> getItemRequestDtoByUserId(@RequestHeader(USER_ID) Long userId,
+                                                            @PositiveOrZero @RequestParam(required = false,
+                                                                    defaultValue = "0") Integer from,
+                                                            @Positive @RequestParam(required = false,
+                                                                    defaultValue = "10") Integer size) {
+        return itemRequestClient.getItemRequestDtoByUserId(userId, from, size);
     }
 
     @GetMapping("/{requestId}")
-    public ItemRequestWithItems getItemRequestDto(@RequestHeader(USER_ID) Long userId,
-                                                                 @PathVariable("requestId") Long requestId) throws NotFoundException {
-       return itemRequestService.getItemRequestWithItemsById(userId, requestId);
-    }*/
+    public ResponseEntity<Object> getItemRequestDto(@RequestHeader(USER_ID) Long userId,
+                                                    @PathVariable("requestId") Long requestId) {
+        return itemRequestClient.getItemRequestDto(userId, requestId);
+    }
 }

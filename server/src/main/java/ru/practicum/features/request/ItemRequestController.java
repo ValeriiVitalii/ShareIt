@@ -6,7 +6,7 @@ import ru.practicum.features.request.model.ItemRequestDto;
 import ru.practicum.features.request.model.ItemRequestWithItems;
 import ru.practicum.features.request.service.ItemRequestService;
 import ru.practicum.exceptions.*;
-import javax.validation.Valid;
+
 import java.util.List;
 
 
@@ -21,7 +21,7 @@ public class ItemRequestController {
 
     @PostMapping
     public ItemRequestDto postItemRequest(@RequestHeader(USER_ID) Long userId,
-                                          @Valid @RequestBody ItemRequestDto itemRequestDto) throws NotFoundException, ValidationException {
+                                          @RequestBody ItemRequestDto itemRequestDto) throws NotFoundException, ValidationException {
         return itemRequestService.postItemRequest(userId, itemRequestDto);
     }
 
@@ -32,14 +32,14 @@ public class ItemRequestController {
 
     @GetMapping("/all")
     public List<ItemRequestWithItems> getItemRequestDtoByUserId(@RequestHeader(USER_ID) Long userId,
-                                                                @RequestParam(defaultValue = "0") Integer from,
-                                                                @RequestParam(defaultValue = "100") Integer size) throws NotFoundException, ValidationException {
+                                                                @RequestParam(required = false, defaultValue = "0") Integer from,
+                                                                @RequestParam(required = false, defaultValue = "10") Integer size) throws NotFoundException, ValidationException {
         return itemRequestService.getItemRequestWithItemsUserId(userId, from, size);
     }
 
     @GetMapping("/{requestId}")
     public ItemRequestWithItems getItemRequestDto(@RequestHeader(USER_ID) Long userId,
-                                                                 @PathVariable("requestId") Long requestId) throws NotFoundException {
-       return itemRequestService.getItemRequestWithItemsById(userId, requestId);
+                                                  @PathVariable("requestId") Long requestId) throws NotFoundException {
+        return itemRequestService.getItemRequestWithItemsById(userId, requestId);
     }
 }

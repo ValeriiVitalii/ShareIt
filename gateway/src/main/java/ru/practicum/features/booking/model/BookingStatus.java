@@ -1,4 +1,4 @@
-package ru.practicum.features.booking;
+package ru.practicum.features.booking.model;
 
 public enum BookingStatus {
     WAITING,

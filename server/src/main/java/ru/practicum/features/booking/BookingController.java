@@ -9,7 +9,6 @@ import ru.practicum.features.booking.model.BookingDto;
 import ru.practicum.features.booking.model.BookingDtoShort;
 import ru.practicum.features.booking.service.BookingService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 
@@ -23,7 +22,7 @@ public class BookingController {
     static final String USER_ID = "X-Sharer-User-Id";
 
     @PostMapping
-    public BookingDto postBooking(@RequestHeader(USER_ID) Long userId, @Valid @RequestBody BookingDtoShort bookingDto)
+    public BookingDto postBooking(@RequestHeader(USER_ID) Long userId, @RequestBody BookingDtoShort bookingDto)
             throws ValidationException, NotFoundException {
         return bookingService.postBooking(userId, bookingDto);
     }
@@ -45,9 +44,9 @@ public class BookingController {
     //Получение всех Booking по booker_id
     @GetMapping
     public List<BookingDto> getAllBookingByBooker(@RequestHeader(USER_ID) Long userId,
-                                                @RequestParam(defaultValue = "ALL") String state,
-                                                @RequestParam(defaultValue = "0") Integer from,
-                                                @RequestParam(defaultValue = "100") Integer size)
+                                                  @RequestParam(defaultValue = "ALL") String state,
+                                                  @RequestParam(defaultValue = "0") Integer from,
+                                                  @RequestParam(defaultValue = "100") Integer size)
             throws NotFoundException, StatusException, ValidationException {
         return bookingService.getAllBookingByBooker(userId, state, from, size);
     }

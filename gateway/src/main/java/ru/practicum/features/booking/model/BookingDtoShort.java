@@ -1,28 +1,27 @@
-package ru.practicum.features.booking;
+package ru.practicum.features.booking.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.features.item.ItemShortIdWithName;
 import ru.practicum.features.user.User;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@AllArgsConstructor
 @NoArgsConstructor
-public class BookingDto {
+@AllArgsConstructor
+public class BookingDtoShort {
 
-    Long id;
-
+    @NotNull
     LocalDateTime start;
 
+    @NotNull
     LocalDateTime end;
 
-    ItemShortIdWithName item;
+    @NotNull
+    Long itemId;
 
     User booker;
-
-    BookingStatus status;
 }

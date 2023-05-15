@@ -3,9 +3,6 @@ package ru.practicum.features.user;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.practicum.exceptions.DuplicationException;
-import ru.practicum.exceptions.NotFoundException;
-import ru.practicum.exceptions.ValidationException;
 
 import javax.validation.Valid;
 
@@ -18,19 +15,19 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<Object> postUser(@Valid @RequestBody User user) throws ValidationException, DuplicationException {
+    public ResponseEntity<Object> postUser(@Valid @RequestBody User user) {
         return userClient.postUser(user);
     }
 
     @PatchMapping("/{userId}")
     public ResponseEntity<Object> patchUser(@PathVariable("userId") Long userId, @RequestBody User user)
-            throws ValidationException, DuplicationException, NotFoundException {
+            throws {
 
         return userClient.patchUser(userId, user);
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<Object> getUserById(@PathVariable("userId") Long userId) throws NotFoundException {
+    public ResponseEntity<Object> getUserById(@PathVariable("userId") Long userId) {
         return userClient.getUserById(userId);
     }
 

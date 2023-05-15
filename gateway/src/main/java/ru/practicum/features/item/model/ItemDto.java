@@ -1,8 +1,8 @@
-package ru.practicum.features.item;
+package ru.practicum.features.item.model;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import ru.practicum.features.booking.BookingShortIdWithBookerId;
+import ru.practicum.features.booking.model.BookingShortIdWithBookerId;
 
 import java.util.List;
 

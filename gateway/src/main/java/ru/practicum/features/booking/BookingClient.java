@@ -8,6 +8,7 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 import ru.practicum.client.BaseClient;
+import ru.practicum.features.booking.model.BookingDtoShort;
 
 
 import java.util.Map;
@@ -26,21 +27,39 @@ public class BookingClient extends BaseClient {
         );
     }
 
-    public ResponseEntity<Object> getBookings(long userId, BookingStatus state, Integer from, Integer size) {
+    public ResponseEntity<Object> postBooking(Long userId, BookingDtoShort bookingDtoShort) {
+        return post("", userId, bookingDtoShort);
+    }
+
+    public ResponseEntity<Object> patchBooking(Long userId, Long bookingId, Boolean approved) {
         Map<String, Object> parameters = Map.of(
-                "state", state.name(),
+                "bookingId", bookingId,
+                "approved", approved
+
+        );
+        return patch("/{bookingId}?approved={approved}", userId, parameters, null);
+    }
+
+    public ResponseEntity<Object> getBookingById(Long userId, Long bookingId) {
+
+        return get("/" + bookingId, userId);
+    }
+
+    public ResponseEntity<Object> getAllBookingByBooker(Long userId, String state, Integer from, Integer size) {
+        Map<String, Object> parameters = Map.of(
+                "state", state,
                 "from", from,
                 "size", size
         );
         return get("?state={state}&from={from}&size={size}", userId, parameters);
     }
 
-
-   /* public ResponseEntity<Object> bookItem(long userId, BookItemRequestDto requestDto) {
-        return post("", userId, requestDto);
-    }*/
-
-    public ResponseEntity<Object> getBooking(long userId, Long bookingId) {
-        return get("/" + bookingId, userId);
+    public ResponseEntity<Object> getAllBookingByOwner(Long userId, String state, Integer from, Integer size) {
+        Map<String, Object> parameters = Map.of(
+                "state", state,
+                "from", from,
+                "size", size
+        );
+        return get("/owner?state={state}&from={from}&size={size}", userId, parameters);
     }
 }

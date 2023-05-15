@@ -6,7 +6,6 @@ import ru.practicum.features.user.model.User;
 import ru.practicum.features.user.service.UserService;
 import ru.practicum.exceptions.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -18,7 +17,7 @@ public class UserController {
 
 
     @PostMapping
-    public User postUser(@Valid @RequestBody User user) throws ValidationException, DuplicationException {
+    public User postUser(@RequestBody User user) throws ValidationException, DuplicationException {
         return userService.postUser(user);
     }
 

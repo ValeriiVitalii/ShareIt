@@ -6,7 +6,7 @@ import ru.practicum.features.item.model.CommentDto;
 import ru.practicum.features.item.model.ItemDto;
 import ru.practicum.features.item.service.ItemService;
 import ru.practicum.exceptions.*;
-import javax.validation.Valid;
+
 import java.util.List;
 
 /**
@@ -24,7 +24,7 @@ public class ItemController {
     //Создание Item
     @PostMapping
     public ItemDto postItem(@RequestHeader(USER_ID) Long userId,
-                            @Valid @RequestBody ItemDto itemDto) throws NotFoundException, ValidationException {
+                            @RequestBody ItemDto itemDto) throws NotFoundException, ValidationException {
         return itemService.postItem(userId, itemDto);
     }
 
