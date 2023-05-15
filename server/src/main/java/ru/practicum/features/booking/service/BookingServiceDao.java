@@ -13,6 +13,7 @@ import ru.practicum.features.item.service.ItemService;
 import ru.practicum.features.user.model.User;
 import ru.practicum.features.user.service.UserService;
 import ru.practicum.exceptions.*;
+
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -139,7 +140,7 @@ public class BookingServiceDao implements BookingService {
         Long ownerId = itemService.getItem(itemId).getOwner().getId();
         if (ownerId.equals(userId)) {
             throw new NotFoundException("Вы не можете взять вещь с id=" + itemId +
-                    " в аренду поскольку, вы являетесь владельцем данной вещи") ;
+                    " в аренду поскольку, вы являетесь владельцем данной вещи");
         }
     }
 

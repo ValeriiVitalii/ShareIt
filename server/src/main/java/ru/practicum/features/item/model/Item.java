@@ -51,6 +51,7 @@ public class Item {
                 Objects.equals(available, item.available) &&
                 Objects.equals(owner, item.owner);
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(id, name, description, available, owner);
